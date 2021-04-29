@@ -3,7 +3,11 @@
 set -x
 
 # try to load the schema
-bundle exec rake db:schema:load >/dev/null 2>&1 || true
+export HOME=/opt/idb
+export RAILS_ENV=production
+#sudo -E -u idb bundle exec rake db:schema:load --trace || true
+sudo -E -u idb bundle exec rake db:migrate --trace || true
+sudo -E -u idb bundle exec rake assets:precompile --trace || true
 
 apachectl -D FOREGROUND &
 

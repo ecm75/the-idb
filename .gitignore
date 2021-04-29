@@ -33,3 +33,7 @@ idb.iml
 /config
 
 revision.txt
+
+# ignore docker envs
+docker/runtime/environments/*.env
+docker/runtime/data/mysql

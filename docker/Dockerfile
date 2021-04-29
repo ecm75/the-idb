@@ -7,6 +7,11 @@ ARG bundler_version=2.0.2
 # just use a login shell.
 SHELL [ "/bin/bash", "-l", "-c" ]
 
+# set timezone
+ENV TZ=Europe/Berlin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
 # install ruby-build
 RUN apt-get update && apt-get install -y curl gnupg
 RUN curl https://codeload.github.com/rbenv/ruby-build/tar.gz/v${ruby_build_version} -O
@@ -14,7 +19,7 @@ RUN tar xf v${ruby_build_version}
 RUN ruby-build-${ruby_build_version}/install.sh
 
 # install ruby dependencies
-RUN apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev bzip2 shared-mime-info
+RUN apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev bzip2 shared-mime-info sudo
 
 # install ruby, skipping docs
 RUN env RUBY_CONFIGURE_OPTS=--disable-install-doc ruby-build ${ruby_version} /usr/local
@@ -32,7 +37,7 @@ RUN /usr/bin/passenger-config validate-install
 RUN apt-get update && apt-get install -y git libmariadb-dev
 RUN useradd -d /opt/idb -M -r idb && usermod -g idb idb
 
-RUN mkdir /opt/idb && chown idb:idb /opt/idb
+RUN mkdir -p /opt/idb/{tmp,log} && chown -R idb:idb /opt/idb
 WORKDIR /opt/idb
 
 USER idb
@@ -42,8 +47,8 @@ COPY --chown=idb:idb . /opt/idb
 #RUN mv docker/build/config config
 
 USER root
+RUN chown -R idb.idb /opt/idb
+RUN adduser www-data idb
 ADD docker/build/apache.conf /etc/apache2/sites-available/idb.conf
 RUN a2dissite 000-default && a2ensite idb
 EXPOSE 80
-
-
