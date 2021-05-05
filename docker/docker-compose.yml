@@ -23,6 +23,11 @@ services:
     volumes:
       - ./runtime/data/mysql:/var/lib/mysql
     env_file: runtime/environments/mysql.env
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
 
   redis:
     image: redis:6.0.4
