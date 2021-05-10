@@ -19,7 +19,7 @@ RUN tar xf v${ruby_build_version}
 RUN ruby-build-${ruby_build_version}/install.sh
 
 # install ruby dependencies
-RUN apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev bzip2 shared-mime-info sudo
+RUN apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev libdb-dev bzip2 shared-mime-info
 
 # Add docker-compose-wait tool
 ENV WAIT_VERSION 2.8.0
@@ -52,7 +52,6 @@ COPY --chown=idb:idb . /opt/idb
 #RUN mv docker/build/config config
 
 USER root
-RUN chown -R idb.idb /opt/idb
 RUN adduser www-data idb
 ADD docker/build/apache.conf /etc/apache2/sites-available/idb.conf
 RUN a2dissite 000-default && a2ensite idb
