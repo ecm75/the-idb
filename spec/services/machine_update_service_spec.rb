@@ -4,20 +4,7 @@ describe MachineUpdateService do
   describe '.update_from_facts' do
     let(:facts) do
       Puppetdb::Facts.new(
-        interfaces: 'eth0,eth1,eth2,lo,Ethernet 2',
-        ipaddress_eth0: '172.20.10.7',
-        ipaddress6_eth0: '172.20.10.7v6',
-        ipaddress_eth1: '10.0.0.1',
-        ipaddress_lo: '127.0.0.1',
-        "ipaddress_Ethernet 2": '127.0.1.1',
-        macaddress_eth0: '6a:a8:6d:e0:a2:a6',
-        macaddress_eth1: '3c:97:0e:40:06:be',
-        macaddress_eth2: '3c:97:0e:40:06:b1',
-        "macaddress_Ethernet 2": '3c:97:0e:40:06:b2',
-        netmask_eth0: '255.255.255.240',
-        netmask_eth1: '255.255.255.0',
-        netmask_lo: '255.0.0.0',
-        "netmask_ethernet 2": '255.255.0.0',
+        networking: {"interfaces"=>{"lo"=>{"ip"=>"127.0.0.1", "bindings6"=>[{"address"=>"::1", "netmask"=>"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "network"=>"::1"}], "mtu"=>65536, "bindings"=>[{"address"=>"127.0.0.1", "netmask"=>"255.0.0.0", "network"=>"127.0.0.0"}], "network6"=>"::1", "netmask6"=>"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "ip6"=>"::1", "netmask"=>"255.0.0.0", "network"=>"127.0.0.0", "scope6"=>"host"}, "eth0"=>{"ip"=>"172.20.10.7", "bindings6"=>[{"address"=>"172.20.10.7v6", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"172.20.10.7", "netmask"=>"255.255.255.240", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"6a:a8:6d:e0:a2:a6"}, "eth1"=>{"ip"=>"10.0.0.1", "bindings6"=>[{"address"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"10.0.0.1", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"3c:97:0e:40:06:be"}, "Ethernet 2"=>{"ip"=>"127.0.1.1", "bindings6"=>[{"address"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"127.0.1.1", "netmask"=>"255.255.0.0", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"3c:97:0e:40:06:b2"}}, "ip"=>"10.10.0.9", "primary"=>"eth0", "mtu"=>1500, "network6"=>"2001:37f:19f8:2::", "hostname"=>"myfqdn", "dhcp"=>"10.10.0.66", "fqdn"=>"myfqdn.example.com", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "domain"=>"mydomain.local", "scope6"=>"global", "mac"=>"ce:cc:c0:07:01:d3"},
         is_virtual: false,
         serialnumber: '42Q6F5J',
         memorysize_mb: '12018.26',
@@ -31,20 +18,7 @@ describe MachineUpdateService do
 
     let(:factsv4) do
       Puppetdb::FactsV4.new(
-        interfaces: 'eth0,eth1,eth2,lo,Ethernet 2',
-        ipaddress_eth0: '172.20.10.7',
-        ipaddress6_eth0: '172.20.10.7v6',
-        ipaddress_eth1: '10.0.0.1',
-        ipaddress_lo: '127.0.0.1',
-        "ipaddress_Ethernet 2": '127.0.1.1',
-        macaddress_eth0: '6a:a8:6d:e0:a2:a6',
-        macaddress_eth1: '3c:97:0e:40:06:be',
-        macaddress_eth2: '3c:97:0e:40:06:b1',
-        "macaddress_Ethernet 2": '3c:97:0e:40:06:b2',
-        netmask_eth0: '255.255.255.240',
-        netmask_eth1: '255.255.255.0',
-        netmask_lo: '255.0.0.0',
-        "netmask_ethernet 2": '255.255.0.0',
+        networking: {"interfaces"=>{"lo"=>{"ip"=>"127.0.0.1", "bindings6"=>[{"address"=>"::1", "netmask"=>"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "network"=>"::1"}], "mtu"=>65536, "bindings"=>[{"address"=>"127.0.0.1", "netmask"=>"255.0.0.0", "network"=>"127.0.0.0"}], "network6"=>"::1", "netmask6"=>"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "ip6"=>"::1", "netmask"=>"255.0.0.0", "network"=>"127.0.0.0", "scope6"=>"host"}, "eth0"=>{"ip"=>"172.20.10.7", "bindings6"=>[{"address"=>"172.20.10.7v6", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"172.20.10.7", "netmask"=>"255.255.255.240", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"6a:a8:6d:e0:a2:a6"}, "eth1"=>{"ip"=>"10.0.0.1", "bindings6"=>[{"address"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"10.0.0.1", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"3c:97:0e:40:06:be"}, "Ethernet 2"=>{"ip"=>"127.0.1.1", "bindings6"=>[{"address"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"127.0.1.1", "netmask"=>"255.255.0.0", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"3c:97:0e:40:06:b2"}}, "ip"=>"10.10.0.9", "primary"=>"eth0", "mtu"=>1500, "network6"=>"2001:37f:19f8:2::", "hostname"=>"myfqdn", "dhcp"=>"10.10.0.66", "fqdn"=>"myfqdn.example.com", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "domain"=>"mydomain.local", "scope6"=>"global", "mac"=>"ce:cc:c0:07:01:d3"},
         is_virtual: false,
         serialnumber: '42Q6F5J',
         memorysize_mb: '12018.26',
@@ -58,20 +32,7 @@ describe MachineUpdateService do
 
     let(:factsUCS) do
       Puppetdb::FactsV4.new(
-        interfaces: 'eth0,eth1,eth2,lo,Ethernet 2',
-        ipaddress_eth0: '172.20.10.7',
-        ipaddress6_eth0: '172.20.10.7v6',
-        ipaddress_eth1: '10.0.0.1',
-        ipaddress_lo: '127.0.0.1',
-        "ipaddress_Ethernet 2": '127.0.1.1',
-        macaddress_eth0: '6a:a8:6d:e0:a2:a6',
-        macaddress_eth1: '3c:97:0e:40:06:be',
-        macaddress_eth2: '3c:97:0e:40:06:b1',
-        "macaddress_Ethernet 2": '3c:97:0e:40:06:b2',
-        netmask_eth0: '255.255.255.240',
-        netmask_eth1: '255.255.255.0',
-        netmask_lo: '255.0.0.0',
-        "netmask_ethernet 2": '255.255.0.0',
+        networking: {"interfaces"=>{"lo"=>{"ip"=>"127.0.0.1", "bindings6"=>[{"address"=>"::1", "netmask"=>"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "network"=>"::1"}], "mtu"=>65536, "bindings"=>[{"address"=>"127.0.0.1", "netmask"=>"255.0.0.0", "network"=>"127.0.0.0"}], "network6"=>"::1", "netmask6"=>"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "ip6"=>"::1", "netmask"=>"255.0.0.0", "network"=>"127.0.0.0", "scope6"=>"host"}, "eth0"=>{"ip"=>"172.20.10.7", "bindings6"=>[{"address"=>"172.20.10.7v6", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"172.20.10.7", "netmask"=>"255.255.255.240", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"6a:a8:6d:e0:a2:a6"}, "eth1"=>{"ip"=>"10.0.0.1", "bindings6"=>[{"address"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"10.0.0.1", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"3c:97:0e:40:06:be"}, "Ethernet 2"=>{"ip"=>"127.0.1.1", "bindings6"=>[{"address"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"2001:37f:19f8:2::"}, {"address"=>"fe80::cccc:c0ff:fe07:1d3", "netmask"=>"ffff:ffff:ffff:ffff::", "network"=>"fe80::"}], "mtu"=>1500, "bindings"=>[{"address"=>"127.0.1.1", "netmask"=>"255.255.0.0", "network"=>"10.10.0.0"}], "network6"=>"2001:37f:19f8:2::", "dhcp"=>"10.10.0.66", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "scope6"=>"global", "mac"=>"3c:97:0e:40:06:b2"}}, "ip"=>"10.10.0.9", "primary"=>"eth0", "mtu"=>1500, "network6"=>"2001:37f:19f8:2::", "hostname"=>"myfqdn", "dhcp"=>"10.10.0.66", "fqdn"=>"myfqdn.example.com", "netmask6"=>"ffff:ffff:ffff:ffff::", "ip6"=>"2001:37f:19f8:2:cccc:c0ff:fe07:1d3", "netmask"=>"255.255.255.0", "network"=>"10.10.0.0", "domain"=>"mydomain.local", "scope6"=>"global", "mac"=>"ce:cc:c0:07:01:d3"},
         is_virtual: false,
         serialnumber: '42Q6F5J',
         memorysize_mb: '12018.26',
@@ -298,23 +259,19 @@ describe MachineUpdateService do
           let(:nic) { machine.nics.find {|n| n.name == 'eth0' } }
 
           it 'sets the mac address' do
-            expect(nic.mac).to eq('6a:a8:6d:e0:a2:a6')
+            expect(nic.mac).to eq('aa:aa:aa:aa:aa:aa')
           end
 
           it 'sets the ip address' do
-            expect(nic.ip_address.addr).to eq('172.20.10.7')
-          end
-
-          it 'sets the ipv6 address' do
-            expect(nic.ip_address.addr_v6).to eq('172.20.10.7v6')
+            expect(nic.ip_address.addr).to eq('1.1.1.1')
           end
 
           it 'sets the netmask' do
-            expect(nic.ip_address.netmask).to eq('255.255.255.240')
+            expect(nic.ip_address.netmask).to eq('0.0.0.0')
           end
 
           it 'sets the family' do
-            expect(nic.ip_address.family).to eq('inet')
+            expect(nic.ip_address.family).to eq('a')
           end
         end
       end
