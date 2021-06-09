@@ -77,7 +77,7 @@ class MachinePresenter < Keynote::Presenter
       if machine.ram < 1000
         "0." + machine.ram.to_s[0..1] + " GB"
       elsif machine.ram < 1025
-        "1.00 GB"
+        "1.00GB"
       else
         number_to_human_size(machine.ram * 1024 * 1024)
       end
@@ -272,6 +272,15 @@ class MachinePresenter < Keynote::Presenter
 
   def diskspace
     number_to_human_size(machine.diskspace)
+  end
+
+  def diskspace_in_tb
+    if machine.diskspace.nil?
+      return ""
+    else
+      round_to_decimals = (machine.diskspace < 1024 * 1024 * 1024 * 1024) ? 2 : 1
+      (machine.diskspace / (1024.0 * 1024.0 * 1024.0 * 1024.0)).round(round_to_decimals).to_s + " TB"
+    end
   end
 
   def fqdn
