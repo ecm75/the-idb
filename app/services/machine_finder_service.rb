@@ -4,7 +4,7 @@ class MachineFinderService
     @puppet_nodes = []
     @oxidized_nodes = []
 
-    if IDB.config.puppetdb
+    if IDB.config.puppetdb && IDB.config.puppetdb.api_urls
       v3_urls = IDB.config.puppetdb.api_urls.map { |u| [u["url"]] if u["version"] == "v3" }.flatten.compact
       @puppet_nodes = Puppetdb::Nodes.new(v3_urls).all
 
@@ -12,7 +12,7 @@ class MachineFinderService
       @puppet_nodes += Puppetdb::NodesV4.new(v4_urls).all
     end
 
-    if IDB.config.oxidized
+    if IDB.config.oxidized && IDB.config.oxidized.api_urls
       oxidized_urls = IDB.config.oxidized.api_urls.map { |u| [u["url"]] }.flatten.compact
       @oxidized_nodes = Oxidized::Nodes.new(oxidized_urls).all
     end

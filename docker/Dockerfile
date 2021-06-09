@@ -7,11 +7,6 @@ ARG bundler_version=2.0.2
 # just use a login shell.
 SHELL [ "/bin/bash", "-l", "-c" ]
 
-# set timezone
-ENV TZ=Europe/Berlin
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN dpkg-reconfigure -f noninteractive tzdata
-
 # install ruby-build
 RUN apt-get update && apt-get install -y curl gnupg
 RUN curl https://codeload.github.com/rbenv/ruby-build/tar.gz/v${ruby_build_version} -O

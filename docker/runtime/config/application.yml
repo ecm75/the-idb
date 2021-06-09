@@ -37,13 +37,13 @@ defaults: &defaults
     unattended_upgrades: true
     inventory: true
     api:
-      v1_enabled: true
+      v1_enabled: false
       v2_enabled: true
       v2_api_token: 'randomtoken'
       v3_enabled: true
-    softdelete: true
+    softdelete: false
     location: true
-    software_packages: false
+    software_packages: true
   redis:
     url: <%= ENV['REDIS_URL'] %>
     namespace: <%= ENV['REDIS_NAMESPACE'] %>
@@ -61,17 +61,17 @@ defaults: &defaults
     ssl_ca: 'tmp/ssl/ca_crt.pem'
   puppetdb:
     api_urls:
-      - url: 'https://puppet.example.com/'
-        version: 'v4'
-    api_timeout: 5
+#      - url: 'https://puppet.example.com/'
+#        version: 'v4'
+    api_timeout: 1
     auto_create: false
     filter:
     ssl_verify: false
   oxidized:
     api_urls:
-      - url: 'http://localhost:8888/'
-    ssl_verify: true
-    api_timeout: 5
+#      - url: 'https://oxidized.tng.de/'
+    ssl_verify: false
+    api_timeout: 1
     auto_create: false
     default_netmask: "255.255.255.0"
     default_interface_name: "interface"
@@ -96,6 +96,8 @@ defaults: &defaults
       is_virtual: true
     - id: 3
       name: 'switch'
+    - id: 4
+      name: 'firewall'
   ldap:
     host: <%= ENV['LDAP_HOST'] %>
     port: <%= ENV['LDAP_PORT'] %>
